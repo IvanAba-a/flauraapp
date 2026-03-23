@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dashboard_screen.dart'; // We will navigate here when clicking Login
+import '../utils/app_colors.dart';
+import 'dashboard_screen.dart';
+import 'signup_screen.dart'; // We imported your new Signup Screen!
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,122 +17,177 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background, 
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 60),
-              // Welcome Text
-              const Text(
-                'Welcome Back',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF65B741), // Flaura Green
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Sign in to monitor your plants',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 60),
+              const SizedBox(height: 40),
               
-              // Email Field
+              // 1. Logo
+              Center(
+                child: Image.asset(
+                  'assets/images/flaura_logo.png',
+                  height: 100, 
+                ),
+              ),
+              const SizedBox(height: 24),
+              
+              // 2. Text
+              const Text(
+                'Welcome to Flaura',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textAccent, 
+                ),
+              ),
+              const SizedBox(height: 40),
+              
+              // 3. Field 1 (Email)
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
+                style: const TextStyle(color: AppColors.textAccent),
                 decoration: InputDecoration(
                   labelText: 'Email Address',
-                  prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFF65B741)),
-                  border: OutlineInputBorder(
+                  labelStyle: const TextStyle(color: AppColors.lightAccent),
+                  prefixIcon: const Icon(Icons.email_outlined, color: AppColors.mainAccent),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.lightAccent, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF65B741), width: 2),
+                    borderSide: const BorderSide(color: AppColors.mainAccent, width: 2),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               
-              // Password Field
+              // 4. Field 2 (Password)
               TextField(
                 controller: _passwordController,
-                obscureText: true, // Hides the password with dots
+                obscureText: true,
+                style: const TextStyle(color: AppColors.textAccent),
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF65B741)),
-                  border: OutlineInputBorder(
+                  labelStyle: const TextStyle(color: AppColors.lightAccent),
+                  prefixIcon: const Icon(Icons.lock_outline, color: AppColors.mainAccent),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.lightAccent, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF65B741), width: 2),
+                    borderSide: const BorderSide(color: AppColors.mainAccent, width: 2),
                   ),
                 ),
               ),
               
-              // Forgot Password Link
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {}, // Will add logic later
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Color(0xFF65B741)),
+              // 5. Secondary Actions (Sign Up & Forgot Password side-by-side)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // CREATE ACCOUNT (Left side, subtle & grey)
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignupScreen()),
+                      );
+                    },
+                    child: const Text(
+                      'Create Account',
+                      style: TextStyle(
+                        color: Colors.grey, // Gives it that disabled/unobtrusive look you wanted
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
-                ),
+                  // FORGOT PASSWORD (Right side, accented)
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        color: AppColors.mainAccent,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               
-              // Login Button
+              // 6. Login Button
               ElevatedButton(
                 onPressed: () {
-                  // For now, this just bypasses authentication and goes straight to the dashboard so we can test the UI!
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => const DashboardScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF65B741),
+                  backgroundColor: AppColors.mainAccent,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  elevation: 2,
                 ),
                 child: const Text(
                   'Login',
-                  style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18, 
+                    color: AppColors.white, 
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
               
               const SizedBox(height: 30),
               
-              // Sign Up Link
+              // Divider for Google Login
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Don\'t have an account?'),
-                  TextButton(
-                    onPressed: () {}, // Will add logic later
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        color: Color(0xFF65B741),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  Expanded(child: Divider(color: AppColors.lightAccent.withOpacity(0.5))),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text('OR', style: TextStyle(color: AppColors.lightAccent)),
                   ),
+                  Expanded(child: Divider(color: AppColors.lightAccent.withOpacity(0.5))),
                 ],
+              ),
+              const SizedBox(height: 30),
+
+              // 7. Login with Google (Secondary Styled)
+              OutlinedButton(
+                onPressed: () {}, 
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: AppColors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16), 
+                  side: BorderSide(
+                    color: AppColors.lightAccent.withOpacity(0.3), 
+                    width: 1,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), 
+                  ),
+                  elevation: 0,
+                ),
+                child: const Text(
+                  'Continue with Google',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.lightAccent, 
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ],
           ),

@@ -13,7 +13,10 @@ class FlauraApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flaura',
       debugShowCheckedModeBanner: false, // Removes the ugly "DEBUG" banner
-      theme: ThemeData(primarySwatch: Colors.green),
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: const Color(0xFFF3F4EE),
+        ),
       home: SplashScreen(), // Starts the app here!
     );
   }
