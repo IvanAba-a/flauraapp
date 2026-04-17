@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "319989980707",
+    "firebase_url": "https://flaura-g3-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "flaura-g3",
+    "storage_bucket": "flaura-g3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319989980707:android:6234e9e312a4ef74e1db96",
+        "android_client_info": {
+          "package_name": "com.example.flauraapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319989980707-qvjr3fprrovem53jsve0lc29rhk1g81o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmvuT3KwuxxECNdPSUQS-MYGXBFstnRN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319989980707-qvjr3fprrovem53jsve0lc29rhk1g81o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319989980707:android:7d53d827fa40b5d6e1db96",
+        "android_client_info": {
+          "package_name": "com.g3.flaura"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319989980707-qvjr3fprrovem53jsve0lc29rhk1g81o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmvuT3KwuxxECNdPSUQS-MYGXBFstnRN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319989980707-qvjr3fprrovem53jsve0lc29rhk1g81o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

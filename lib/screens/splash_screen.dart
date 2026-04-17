@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'login_screen.dart'; 
-import '../utils/plant_tips.dart'; // Import your new tip bank!
+import '../utils/plant_tips.dart'; 
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Center(
               child: Image.asset(
                 'assets/images/flaura_logo.png',
-                height: 300, // Tweak this if your logo is too big/small
+                height: 300, 
               ),
             ),
           ),

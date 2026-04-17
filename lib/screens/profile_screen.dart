@@ -1,27 +1,59 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
+import '../utils/plant_presets.dart';
+import 'main_plant_screen.dart'; // NEW: Imported to enable navigation
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final PlantPreset activePreset;
+  final String statusText;
+  final Color statusColor;
+  
+  // NEW: We need these so we can pass them to the Main Plant Screen!
+  final int currentMoisture;
+  final String currentUv;
+
+  const ProfileScreen({
+    Key? key,
+    required this.activePreset,
+    required this.statusText,
+    required this.statusColor,
+    required this.currentMoisture,
+    required this.currentUv,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Inheriting background color from main.dart ThemeData, but explicit here for safety
-      backgroundColor: AppColors.background, // F3F4EE
+      backgroundColor: AppColors.background, 
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
           child: Column(
             children: [
-              // Header spacer
-              const SizedBox(height: 30),
+              // --- NEW: Interactive Back Button ---
+              Align(
+                alignment: Alignment.topLeft,
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.arrow_back_ios_new, color: AppColors.textAccent, size: 24),
+                      SizedBox(width: 8),
+                      Text(
+                        'Back', 
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textAccent)
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
 
               // --- 1. Profile Avatar & Edit Icon ---
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  // The main circular avatar container with border and shadow
                   Container(
                     width: 150,
                     height: 150,
@@ -30,19 +62,17 @@ class ProfileScreen extends StatelessWidget {
                       border: Border.all(color: AppColors.white, width: 6),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 20,
                           spreadRadius: 2,
                         )
                       ],
                       image: const DecorationImage(
-                        // NetworkImage placeholder for Ivan's avatar
                         image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfI3-r3oWq9q_8XN-OqD10v4R3e9v4R3e9v4R3e9v4'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  // The positioned Edit Pencil Icon overlapping the bottom-right
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -70,28 +100,27 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textAccent, // 112B09 (Dark green)
+                  color: AppColors.textAccent, 
                 ),
               ),
               const Text(
                 '@hlmnan',
                 style: TextStyle(
                   fontSize: 16,
-                  color: AppColors.lightAccent, // 2C420A (Lighter green)
+                  color: AppColors.lightAccent, 
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 30),
 
               // --- 3. Bio Section ---
-              // Wrapped in a soft green container matching the design
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.lightAccent.withOpacity(0.1), // Faded green background
+                  color: AppColors.lightAccent.withValues(alpha: 0.1), 
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.lightAccent.withOpacity(0.1)),
+                  border: Border.all(color: AppColors.lightAccent.withValues(alpha: 0.1)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +142,7 @@ class ProfileScreen extends StatelessWidget {
                             'Edit',
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppColors.mainAccent, // 31511E
+                              color: AppColors.mainAccent, 
                               decoration: TextDecoration.underline,
                             ),
                           ),
@@ -121,13 +150,12 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    // Tagalog text from the reference image
                     const Text(
                       'Magtanim ay di biro, maghapon naka tayo',
                       style: TextStyle(
                         fontSize: 14,
                         color: AppColors.lightAccent,
-                        height: 1.4, // Line height for better readability
+                        height: 1.4, 
                       ),
                     ),
                   ],
@@ -140,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Your Plants',
+                    'Your Active Plant', 
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -161,24 +189,28 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 15),
 
-              // --- 5. Plant Tiles (Replicated from Dashboard style) ---
-              // Snake Plant: Healthy (replicating image_10.png)
-              _buildProfilePlantTile(
-                'Snake Plant',
-                'All normal',
-                AppColors.mainAccent, // 31511E (Green status)
-                Icons.eco_outlined,
-              ),
-              const SizedBox(height: 12),
-              // Pothos: Critical UV Level (replicating image_10.png)
-              _buildProfilePlantTile(
-                'Pothos',
-                'Critical UV Level',
-                Colors.red, // Red status warning
-                Icons.warning_amber_outlined,
+              // --- 5. NEW: Clickable Dynamic Plant Tile ---
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainPlantScreen(
+                        preset: activePreset,
+                        currentMoisture: currentMoisture,
+                        currentUv: currentUv,
+                      ),
+                    ),
+                  );
+                },
+                child: _buildProfilePlantTile(
+                  activePreset.name,
+                  statusText,
+                  statusColor,
+                  activePreset.imagePath,
+                ),
               ),
               
-              // Spacing at the bottom of the scroll view
               const SizedBox(height: 40),
             ],
           ),
@@ -187,18 +219,16 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // --- Reusable widget builder for the elegant plant tiles ---
-  // (Adapts the style established in the DashboardScreen for coherence)
-  Widget _buildProfilePlantTile(String name, String statusText, Color statusColor, IconData icon) {
+  Widget _buildProfilePlantTile(String name, String statusText, Color statusColor, String imagePath) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.lightAccent.withOpacity(0.05)),
+        border: Border.all(color: AppColors.lightAccent.withValues(alpha: 0.05)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lightAccent.withOpacity(0.05),
+            color: AppColors.lightAccent.withValues(alpha: 0.05),
             blurRadius: 10,
             spreadRadius: 1,
           )
@@ -206,15 +236,14 @@ class ProfileScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Icon Placeholder
-          // (In a future integration, this would be a faded image like image_10.png)
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: BorderRadius.circular(12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              imagePath,
+              width: 55,
+              height: 55,
+              fit: BoxFit.cover,
             ),
-            child: Icon(icon, color: AppColors.mainAccent, size: 30),
           ),
           const SizedBox(width: 16),
           Expanded(
